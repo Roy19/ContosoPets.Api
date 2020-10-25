@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <IsPackable>true</IsPackable>
+    <Version>1.0.0</Version>
+    <AssemblyName>ContosoPets.Api</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

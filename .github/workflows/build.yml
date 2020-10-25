@@ -1,0 +1,22 @@
+name: Build and pack project
+
+on: [push, pull_request]
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Build
+      run: chmod 777 /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh && /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        path: /home/runner/work/ContosoPets.Api/ContosoPets.Api/dist/ContosoPets.Api.*.zip
+
+

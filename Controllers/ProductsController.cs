@@ -45,5 +45,21 @@ namespace ContosoPets.Api.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(long id, Product product)
+        {
+            if(id != product.Id)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                _context.Entry(product).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+        }
     }
 }
