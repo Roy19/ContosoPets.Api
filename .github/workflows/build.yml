@@ -6,22 +6,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    - name: Install dependencies
-      run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Publish
-      run: dotnet publish --configuration Release --runtime win-x64 --no-restore
-    - name: Package
-      run: zip -r ContosoPets.Api.zip ./bin/Release/win-x64/publish/
-    - uses: actions/upload-artifact@v2
+      run: chmod 777 /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh && /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
       with:
-        name: ContosoPets.Api
-        path: /home/runner/work/ContosoPets.Api/ContosoPets.Api.zip
+        path: /home/runner/work/ContosoPets.Api/ContosoPets.Api/dist/ContosoPets.Api.*.zip
 
 

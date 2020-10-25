@@ -2,3 +2,5 @@ bin/*
 obj/*
 *.log
 .vscode/*
+tools/*
+dist/*
