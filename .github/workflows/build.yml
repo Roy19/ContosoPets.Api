@@ -16,12 +16,12 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish --configuration Release --runtime win-x64
+      run: dotnet publish --configuration Release --runtime win-x64 --no-restore
     - name: Package
-      run: dotnet pack --configuration Release --no-build
+      run: zip -r ContosoPets.Api.zip ./bin/Release/win-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
         name: ContosoPets.Api
-        path: /home/runner/work/ContosoPets.Api/ContosoPets.Api/bin/Release/ContosoPets.Api.1.0.0.nupkg
+        path: /home/runner/work/ContosoPets.Api/ContosoPets.Api.zip
 
 
