@@ -46,6 +46,24 @@ namespace ContosoPets.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(long id)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if(product == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+        }
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(long id, Product product)
         {
