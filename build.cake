@@ -64,7 +64,26 @@ Task("Package")
 
         EnsureDirectoryExists(packageOutputDirectory);
 
-        Zip($"{publishDirectory}", $"{packageOutputDirectory}/ContosoPets.Api.{version}.zip");
+        var nugetPackSettings = new NuGetPackSettings
+        {
+            Id = "ContosoPets.Api",
+            Version = version,
+            Title = "ContosoPets.Api",
+            Description = "A sample RESTful API using .NET Core",
+            Authors = new []{ "Contoso" },
+            ProjectUrl = new Uri("https://github.com/Roy19/ContosoPets.Api"),
+            Symbols = false,
+            Files = new [] {
+                new NuSpecContent
+                {
+                    Source = "*", Target = "bin"
+                }
+            },
+            BasePath = publishDirectory,
+            OutputDirectory = $"./{packageOutputDirectory}"
+        };
+
+        NuGetPack(nugetPackSettings);
     });
 
 Task("Build")
