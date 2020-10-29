@@ -17,6 +17,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        path: /home/runner/work/ContosoPets.Api/ContosoPets.Api/dist/ContosoPets.Api.*.zip
+        name: ContosoPets.Api
+        path: /home/runner/work/ContosoPets.Api/ContosoPets.Api/dist/ContosoPets.Api.*.nupkg
 
 
