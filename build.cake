@@ -67,6 +67,19 @@ Task("Package")
         Zip($"{publishDirectory}", $"{packageOutputDirectory}/ContosoPets.Api.{version}.zip");
     });
 
+Task("Release")
+    .Does(() =>
+    {
+        var nugetApiKey = Argument<string>("API-Key");
+        var settings = new DotNetCoreNuGetPushSettings
+        {
+            Source = "https://nuget.pkg.github.com/Roy19/index.json",
+            ApiKey = nugetApiKey
+        };
+        
+        DotNetCoreNuGetPush($"{packageOutputDirectory}/ContosoPets.Api.{version}.zip", settings);
+    });
+
 Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("Package");
