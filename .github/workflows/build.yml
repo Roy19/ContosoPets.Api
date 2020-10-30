@@ -20,12 +20,10 @@ jobs:
       with:
         name: ContosoPets.Api
         path: /home/runner/work/ContosoPets.Api/ContosoPets.Api/dist/ContosoPets.Api.*.nupkg
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
     - name: Release artifact to github nuget
-      run: /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh -t Release -API-Key ${{ secrets.GITHUB_TOKEN }}
-      shell: bash
+      run: dotnet nuget push "./dist/ContosoPets.Api.*.nupkg" -s "https://nuget.pkg.github.com/Roy19/index.json" -k ${{env.NUGET_GPR_KEY}}
+      env:
+        NUGET_GPR_KEY: ${{secrets.NUGET_GPR}}
+    
 
 

@@ -72,6 +72,11 @@ Task("Package")
             Description = "A sample RESTful API using .NET Core",
             Authors = new []{ "Contoso" },
             ProjectUrl = new Uri("https://github.com/Roy19/ContosoPets.Api"),
+            Repository = new NuGetRepository
+                        {
+                            Type = "Git",
+                            Url = "https://github.com/Roy19/ContosoPets.Api"
+                        },
             Symbols = false,
             Files = new [] {
                 new NuSpecContent
