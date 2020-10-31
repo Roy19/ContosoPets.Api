@@ -12,7 +12,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    - name: Build
+    - name: Build, Pack and Release
       run: |
         chmod +x /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh
         /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh --target=CI --API-Key=${{env.NUGET_GPR_KEY}}
@@ -24,8 +24,5 @@ jobs:
       with:
         name: ContosoPets.Api
         path: /home/runner/work/ContosoPets.Api/ContosoPets.Api/dist/ContosoPets.Api.*.nupkg
-    - name: Release artifact to github nuget
-      run: dotnet nuget push "./dist/ContosoPets.Api.*.nupkg" -s "https://nuget.pkg.github.com/Roy19/index.json" -k ${{env.NUGET_GPR_KEY}} --skip-duplicate
-    
 
 
