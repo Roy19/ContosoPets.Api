@@ -7,7 +7,8 @@ var target = Argument("Target", "Build");
 var packageOutputDirectory = Argument("Package-Output-Directory", "dist");
 
 Task("Clean")
-    .Does(() => {
+    .Does(() => 
+    {
         var cleanSettings = new DotNetCoreCleanSettings
         {
             Framework = "netcoreapp3.1",
@@ -30,7 +31,8 @@ Task("Clean")
     });
 
 Task("Compile")
-    .Does(() => {
+    .Does(() => 
+    {
         DotNetCoreRestore();
 
         var buildSettings = new DotNetCoreBuildSettings
@@ -44,14 +46,22 @@ Task("Compile")
     });
 
 Task("Version")
-    .Does(() => {
+    .Does(() => 
+    {
+        var branchName = Argument<string>("Branch-Name");
         version = XmlPeek(projectFile, "/Project/PropertyGroup/Version/text()");
+
+        if(branchName != "master")
+        {
+            var buildNumber = Argument<string>("Build-Number");
+            version += $"-alpha-{buildNumber}";
+        }
+
         Information($"Detected version {version}");
     });
 
 Task("Package")
     .IsDependentOn("Compile")
-    .IsDependentOn("Version")
     .Does(() =>
     {
         var publishSettings = new DotNetCorePublishSettings
@@ -111,6 +121,7 @@ Task("Build")
 
 Task("CI")
     .IsDependentOn("Clean")
+    .IsDependentOn("Version")
     .IsDependentOn("Package")
     .IsDependentOn("Release");
 

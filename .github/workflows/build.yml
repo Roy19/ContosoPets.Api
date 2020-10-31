@@ -13,9 +13,16 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Build, Pack and Release
+      uses: nelonoel/branch-name@v1
       run: |
         chmod +x /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh
-        /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh --target=CI --API-Key=${{env.NUGET_GPR_KEY}}
+        RELEASE_BRANCH=master
+        if [ $BRANCH_NAME = $RELEASE_BRANCH ]
+          then
+            /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh --target=CI --Branch-Name=master --API-Key=${{env.NUGET_GPR_KEY}}
+          else
+            /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh --target=CI --Branch-Name=master --Build-Number=${GITHUB_RUN_NUMBER} --API-Key=${{env.NUGET_GPR_KEY}}
+        fi
       env:
         NUGET_GPR_KEY: ${{secrets.NUGET_GPR}}
       shell: bash
