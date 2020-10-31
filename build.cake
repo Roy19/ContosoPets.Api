@@ -102,11 +102,16 @@ Task("Release")
             SkipDuplicate = true
         };
         
-        NuGetPush($"{packageOutputDirectory}/ContosoPets.Api.{version}.zip", settings);
+        NuGetPush($"{packageOutputDirectory}/ContosoPets.Api.{version}.nupkg", settings);
     });
 
 Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("Package");
+
+Task("CI")
+    .IsDependentOn("Clean")
+    .IsDependentOn("Package")
+    .IsDependentOn("Release");
 
 RunTarget(target);
