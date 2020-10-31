@@ -12,8 +12,9 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
+    - name: Get branch name
+      uses: nelonoel/branch-name@v1 
     - name: Build, Pack and Release
-      uses: nelonoel/branch-name@v1
       run: |
         chmod +x /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh
         RELEASE_BRANCH=master
