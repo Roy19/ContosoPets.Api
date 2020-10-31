@@ -15,15 +15,7 @@ jobs:
     - name: Get branch name
       uses: nelonoel/branch-name@v1 
     - name: Build, Pack and Release
-      run: |
-        chmod +x /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh
-        RELEASE_BRANCH=master
-        if [ $BRANCH_NAME = $RELEASE_BRANCH ]
-          then
-            /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh --target=CI --Branch-Name=master --API-Key=${{env.NUGET_GPR_KEY}}
-          else
-            /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh --target=CI --Branch-Name=master --Build-Number=${GITHUB_RUN_NUMBER} --API-Key=${{env.NUGET_GPR_KEY}}
-        fi
+      run: chmod +x ./build-pipeline.sh && ./build-pipeline.sh
       env:
         NUGET_GPR_KEY: ${{secrets.NUGET_GPR}}
       shell: bash
