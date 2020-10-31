@@ -95,13 +95,14 @@ Task("Release")
     .Does(() =>
     {
         var nugetApiKey = Argument<string>("API-Key");
-        var settings = new DotNetCoreNuGetPushSettings
+        var settings = new NuGetPushSettings
         {
             Source = "https://nuget.pkg.github.com/Roy19/index.json",
-            ApiKey = nugetApiKey
+            ApiKey = nugetApiKey,
+            SkipDuplicate = true
         };
         
-        DotNetCoreNuGetPush($"{packageOutputDirectory}/ContosoPets.Api.{version}.zip", settings);
+        NuGetPush($"{packageOutputDirectory}/ContosoPets.Api.{version}.zip", settings);
     });
 
 Task("Build")

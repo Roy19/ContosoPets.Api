@@ -21,7 +21,7 @@ jobs:
         name: ContosoPets.Api
         path: /home/runner/work/ContosoPets.Api/ContosoPets.Api/dist/ContosoPets.Api.*.nupkg
     - name: Release artifact to github nuget
-      run: dotnet nuget push "./dist/ContosoPets.Api.*.nupkg" -s "https://nuget.pkg.github.com/Roy19/index.json" -k ${{env.NUGET_GPR_KEY}}
+      run: dotnet nuget push "./dist/ContosoPets.Api.*.nupkg" -s "https://nuget.pkg.github.com/Roy19/index.json" -k ${{env.NUGET_GPR_KEY}} --skip-duplicate
       env:
         NUGET_GPR_KEY: ${{secrets.NUGET_GPR}}
     
