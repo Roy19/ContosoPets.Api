@@ -1,8 +1,8 @@
-var projectFile = "./ContosoPets.Api.csproj";
+var projectFile = "./src/ContosoPets.Api.csproj";
 var version = "0.1.0";  // default semantic version
-var publishDirectory = "./bin/Release/netcoreapp3.1/win-x64/publish/";
-var binDebugDirectory = "./bin/Debug/";
-var binReleaseDirectory = "./bin/Release/";
+var publishDirectory = "./src/bin/Release/netcoreapp3.1/win-x64/publish/";
+var binDebugDirectory = "./src/bin/Debug/";
+var binReleaseDirectory = "./src/bin/Release/";
 var target = Argument("Target", "Build");
 var packageOutputDirectory = Argument("Package-Output-Directory", "dist");
 
