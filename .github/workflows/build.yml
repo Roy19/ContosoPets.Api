@@ -12,26 +12,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    - name: Get branch name
-      uses: nelonoel/branch-name@v1 
     - name: Build, Pack and Release
       run: |
         chmod +x /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh
-        RELEASE_BRANCH=master
-        echo "Branch: $BRANCH_NAME"
-        if [ $BRANCH_NAME = $RELEASE_BRANCH ]
-          then
-            /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh --target=CI --Branch-Name=master --API-Key=${{env.NUGET_GPR_KEY}}
-          else
-            /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh --target=CI --Branch-Name=$BRANCH_NAME --Build-Number=${GITHUB_RUN_NUMBER} --API-Key=${{env.NUGET_GPR_KEY}}
-        fi
+        /home/runner/work/ContosoPets.Api/ContosoPets.Api/build.sh --target=CI --API-Key=${{env.NUGET_GPR_KEY}}
       env:
         NUGET_GPR_KEY: ${{secrets.NUGET_GPR}}
       shell: bash
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: ContosoPets.Api
-        path: /home/runner/work/ContosoPets.Api/ContosoPets.Api/dist/ContosoPets.Api.*.nupkg
-
 
