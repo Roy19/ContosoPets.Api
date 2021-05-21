@@ -1,48 +1,22 @@
+#addin nuget:?package=Cake.Docker&version=1.0.0
+
 var projectFile = "./src/ContosoPets.Api.csproj";
 var version = "0.1.0";  // default semantic version
 var publishDirectory = "./src/bin/Release/netcoreapp3.1/win-x64/publish/";
 var binDebugDirectory = "./src/bin/Debug/";
 var binReleaseDirectory = "./src/bin/Release/";
+var dockerFilePath = ".";
 var target = Argument("Target", "Build");
 var packageOutputDirectory = Argument("Package-Output-Directory", "dist");
 
-Task("Clean")
+Task("Build")
     .Does(() => 
     {
-        var cleanSettings = new DotNetCoreCleanSettings
+        var dockerBuildSettings = new DockerImageBuildSettings
         {
-            Framework = "netcoreapp3.1",
-            Configuration = "Release"
+            Tag = new string[] { "contosopets-api" }
         };
-        DotNetCoreClean(projectFile, cleanSettings);
-
-        if(DirectoryExists(binDebugDirectory))
-        {
-            CleanDirectory(binDebugDirectory);
-        }
-        if(DirectoryExists(binReleaseDirectory))
-        {
-            CleanDirectory(binReleaseDirectory);
-        }
-        if(DirectoryExists(packageOutputDirectory))
-        {
-            CleanDirectory(packageOutputDirectory);
-        }
-    });
-
-Task("Compile")
-    .Does(() => 
-    {
-        DotNetCoreRestore();
-
-        var buildSettings = new DotNetCoreBuildSettings
-        {
-            Framework = "netcoreapp3.1",
-            Configuration = "Release",
-            NoRestore = true
-        };
-
-        DotNetCoreBuild(projectFile, buildSettings);
+        DockerBuild(dockerBuildSettings, dockerFilePath);
     });
 
 Task("Version")
@@ -60,47 +34,6 @@ Task("Version")
         Information($"Detected version {version}");
     });
 
-Task("Package")
-    .IsDependentOn("Compile")
-    .Does(() =>
-    {
-        var publishSettings = new DotNetCorePublishSettings
-        {
-            Framework = "netcoreapp3.1",
-            Configuration = "Release",
-            Runtime = "win-x64"
-        };
-        DotNetCorePublish(projectFile, publishSettings);
-
-        EnsureDirectoryExists(packageOutputDirectory);
-
-        var nugetPackSettings = new NuGetPackSettings
-        {
-            Id = "ContosoPets.Api",
-            Version = version,
-            Title = "ContosoPets.Api",
-            Description = "A sample RESTful API using .NET Core",
-            Authors = new []{ "Contoso" },
-            ProjectUrl = new Uri("https://github.com/Roy19/ContosoPets.Api"),
-            Repository = new NuGetRepository
-                        {
-                            Type = "Git",
-                            Url = "https://github.com/Roy19/ContosoPets.Api"
-                        },
-            Symbols = false,
-            Files = new [] {
-                new NuSpecContent
-                {
-                    Source = "*", Target = "bin"
-                }
-            },
-            BasePath = publishDirectory,
-            OutputDirectory = $"./{packageOutputDirectory}"
-        };
-
-        NuGetPack(nugetPackSettings);
-    });
-
 Task("Release")
     .Does(() =>
     {
@@ -115,14 +48,10 @@ Task("Release")
         NuGetPush($"{packageOutputDirectory}/ContosoPets.Api.{version}.nupkg", settings);
     });
 
-Task("Build")
-    .IsDependentOn("Clean")
-    .IsDependentOn("Package");
-
 Task("CI")
-    .IsDependentOn("Clean")
-    .IsDependentOn("Version")
-    .IsDependentOn("Package")
-    .IsDependentOn("Release");
+    .IsDependentOn("Build");
+    //.IsDependentOn("Version")
+    //.IsDependentOn("Package")
+    //.IsDependentOn("Release");
 
 RunTarget(target);
