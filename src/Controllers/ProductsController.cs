@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace ContosoPets.Api.Controllers
 {
@@ -12,11 +13,13 @@ namespace ContosoPets.Api.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly ContosoPetsContext _context;
+        private readonly IContosoPetsContext _context;
+        private readonly ILogger<ProductsController> _logger;
         
-        public ProductsController(ContosoPetsContext context)
+        public ProductsController(IContosoPetsContext context, ILogger<ProductsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]

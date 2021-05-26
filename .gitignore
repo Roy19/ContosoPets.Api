@@ -1,5 +1,5 @@
-src/bin/*
-src/obj/*
+**/bin/*
+**/obj/*
 *.log
 .vscode/*
 tools/*
