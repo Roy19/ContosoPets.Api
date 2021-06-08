@@ -43,6 +43,7 @@ namespace ContosoPets.Api.Tests.Controllers
             var result = productsController.GetAll();
 
             Assert.IsType<ActionResult<List<Product>>>(result);
+            Assert.Equal(mockProducts, result.Value);
         }
 
         private DbSet<T> GetQueryableMockDbSet<T>(List<T> sourceList) where T : class

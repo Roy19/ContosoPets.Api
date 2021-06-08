@@ -1,6 +1,7 @@
 #addin nuget:?package=Cake.Docker&version=1.0.0
 
 var projectFile = "./src/ContosoPets.Api.csproj";
+var unitTestProjectFile = "./tests/ContosoPets.Api.Tests.csproj";
 var version = "0.1.0";  // default semantic version
 var publishDirectory = "./src/bin/Release/netcoreapp3.1/win-x64/publish/";
 var binDebugDirectory = "./src/bin/Debug/";
@@ -8,6 +9,15 @@ var binReleaseDirectory = "./src/bin/Release/";
 var dockerFilePath = ".";
 var target = Argument("Target", "Build");
 var packageOutputDirectory = Argument("Package-Output-Directory", "dist");
+
+Task("Run-UnitTests")
+    .Does(() => 
+    {
+        DotNetCoreTest(unitTestProjectFile, new DotNetCoreTestSettings
+        {
+            Configuration = "Release"
+        });
+    });
 
 Task("Build")
     .Does(() => 
@@ -49,6 +59,7 @@ Task("Release")
     });
 
 Task("CI")
+    .IsDependentOn("Run-UnitTests")
     .IsDependentOn("Build");
     //.IsDependentOn("Version")
     //.IsDependentOn("Package")
